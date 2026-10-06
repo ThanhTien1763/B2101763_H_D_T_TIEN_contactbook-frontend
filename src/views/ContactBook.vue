@@ -33,7 +33,17 @@
           Chi tiết Liên hệ
           <i class="fas fa-address-card"></i>
         </h4>
-        <ContactCard :contact="activeContact" />
+                <ContactCard :contact="activeContact" />
+        <router-link
+          :to="{
+            name: 'contact.edit',
+            params: { id: activeContact._id },
+          }"
+        >
+          <span class="mt-2 badge badge-warning">
+            <i class="fas fa-edit"></i> Hiệu chỉnh</span
+          >
+        </router-link>
       </div>
     </div>
   </div>
@@ -59,20 +69,17 @@ export default {
     };
   },
   watch: {
-    // Khi đổi nội dung tìm kiếm thì bỏ chọn phần tử đang chọn
     searchText() {
       this.activeIndex = -1;
     },
   },
   computed: {
-    // Gộp các trường của mỗi contact thành 1 chuỗi để tìm kiếm
     contactStrings() {
       return this.contacts.map((contact) => {
         const { name, email, address, phone } = contact;
         return [name, email, address, phone].join("");
       });
     },
-    // Trả về các contact có chứa chuỗi cần tìm
     filteredContacts() {
       if (!this.searchText) return this.contacts;
       return this.contacts.filter((_contact, index) =>
